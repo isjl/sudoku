@@ -556,6 +556,17 @@
     select(c);
   });
 
+  // Play: tapping anywhere outside the board and its controls deselects the cell and
+  // clears the digit highlight (bivalue stays), so there's a safe way to "let go".
+  document.addEventListener('click', (e) => {
+    if (mode !== 'play' || P.status !== 'playing') return;
+    if (e.target.closest('#board, #digitbar, #playbar, #hintcard, .ref')) return;
+    if (P.selected < 0 && !P.filter) return;
+    P.selected = -1;
+    P.filter = 0;
+    render();
+  });
+
   let hoverCell = -1;
   function setHover(c) {
     if (c === hoverCell) return;
